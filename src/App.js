@@ -6,6 +6,8 @@ import { SignUp } from "./components/SignUp";
 import { Sidebar } from "./ui/Sidebar";
 import { TrainingPurpose } from "./components/TrainingPurpose";
 import { UserList } from "./components/UserList";
+import { BannedList } from "./components/BannedList";
+import { AssignRoutine } from "./components/AssignRoutine";
 
 function App() {
   return (
@@ -18,6 +20,9 @@ function App() {
               <Route path="/purpose" element={<TrainingPurpose />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/userlist" element={<UserList/>} />
+              <Route path="/bannedlist" element={<BannedList/>} />
+              <Route path="/assignroutine" element={<AssignRoutine/>} />
+              
             </Routes>
           
         </div>

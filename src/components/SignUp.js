@@ -18,6 +18,7 @@ export const SignUp = () => {
             email:'',
             password:'',
             userState: true,
+            banReason:'',
         },
         validationSchema: Yup.object({
             name: Yup.string().min(4, 'Should be 4 characters min').required('Required'),
@@ -26,6 +27,7 @@ export const SignUp = () => {
             email: Yup.string().required('Required'),
             password: Yup.string().required('Required'),
             userState: Yup.bool(),
+            banReason: Yup.string(),
         }),
         onSubmit: user =>{
             try {

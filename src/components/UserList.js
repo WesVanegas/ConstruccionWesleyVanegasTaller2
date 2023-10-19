@@ -7,7 +7,8 @@ export const UserList = () => {
   //const [documentData, setDocumentData] = useState(null)
   //const [updateUserState, setUpdateUserState] = useState(false);
   //const [updateUserState, setUpdateUserState] = useState()
-  //const [dataIdToBeUpdated, setDataIdToBeUpdated] = useState("");
+  const [dataIdToBeUpdated, setDataIdToBeUpdated] = useState("");
+  const [userBanReason, setUserBanReason] = useState("");
 
   useEffect(() => {
     firebase.db.collection("user").onSnapshot((snapshot) => {
@@ -20,16 +21,16 @@ export const UserList = () => {
     });
   }, []);
 
-  /*
-  const handleModifyField = () =>{
-    //const updateData = {userState: !false};
-    firebase.db.collection('user').doc(dataIdToBeUpdated).update({userState: updateUserState}).then(()=>{
-      console.log('Documento actulizado')
-    }).catch((error)=>{
-      console.error('Error al actualizar', error)
-    })
-  }*/
+  
 
+  const updateData = (e) => {
+    e.preventDefault();
+    firebase.db.collection('user').doc(dataIdToBeUpdated).update({userState: false, banReason: userBanReason});
+    setDataIdToBeUpdated("");
+    setUserBanReason("");
+  }
+
+  /*
   //update data
   const banUser = (id, userState)=>{
     //const newState = {userState: !userState}
@@ -43,9 +44,24 @@ export const UserList = () => {
       console.log('User is alredy Banned')
     }
   }
+  */
 
   return (
     <>
+    {!dataIdToBeUpdated ? (console.log("nose")) :(
+      <div>
+        <input
+          className='shadow appearance-none border rounded w-full py-2 text-gray-700 leadifocus:outline-none'
+          id='banMotive'
+          type='text'
+          placeholder='Text ban motive'
+          value={userBanReason}
+          onChange={(e) => setUserBanReason(e.target.value)}
+          />
+          <button onClick={updateData} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8">Ban User</button>
+      </div>
+
+    )}
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tr>
@@ -63,20 +79,34 @@ export const UserList = () => {
             </th>
           </tr>
 
+
+
           {userData?.map(({ id, data }) => (
-            <tr
+            data.userState?(
+
+              
+              <tr
               key={id}
               className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-            >
+              >
+              
               <th className="px-6 py-4">{data.name}</th>
               <th className="px-6 py-4">{data.cc}</th>
               <th className="px-6 py-4">{data.userState? 'Active' : 'Banned'}</th>
               <th className="px-6 py-4">
-                
-                <button onClick={()=>{banUser(id, data.userState)}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8">Ban user</button>
+              
+                <button onClick={()=>{setDataIdToBeUpdated(id)}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8">Ban user</button>
+              
+              {/*<button onClick={()=>{banUser(id, data.userState)}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8">Ban user</button>*/}
               </th>
-            </tr>
+              
+              </tr>
+              ): console.log("algo")
+
+
+
           ))}
+          
 
 
         </table>

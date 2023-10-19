@@ -43,9 +43,27 @@ export const Sidebar = () => {
             className="p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900"
             //activeClassName="text-yellow-500"
             end
+            to="/assignroutine"
+          >
+            Assign Routine
+          </NavLink>
+          
+          <NavLink
+            className="p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900"
+            //activeClassName="text-yellow-500"
+            end
             to="/userlist"
           >
-            Users List
+            List Active Users
+          </NavLink>
+          
+          <NavLink
+            className="p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900"
+            //activeClassName="text-yellow-500"
+            end
+            to="/bannedlist"
+          >
+            List Banned Users
           </NavLink>
 
         </nav>

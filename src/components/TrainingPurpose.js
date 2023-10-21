@@ -2,9 +2,11 @@ import React, { useContext, useState } from "react";
 import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { FirebaseContext } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export const TrainingPurpose = () => {
   const { firebase } = useContext(FirebaseContext);
+  const navigate = useNavigate();
 
   //Validar campos
   const formik = useFormik({
@@ -31,6 +33,7 @@ export const TrainingPurpose = () => {
       try {
         //console.log(signup)
         firebase.db.collection("Trainings").add(trainingPurpose);
+        navigate("/menu");
       } catch (error) {
         console.log(error);
       }

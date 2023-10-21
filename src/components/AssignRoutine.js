@@ -4,6 +4,9 @@ import { FirebaseContext } from "../firebase";
 export const AssignRoutine = () => {
   const { firebase } = useContext(FirebaseContext);
   const [userData, setUserData] = useState([]);
+  const [trainingData, setTrainingData] = useState([]);
+  const [trainingSelected, setTrainingSelected] = useState("");
+  const [dataIdToBeUpdated, setDataIdToBeUpdated] = useState("");
 
   useEffect(() => {
     firebase.db.collection("user").onSnapshot((snapshot) => {
@@ -14,25 +17,25 @@ export const AssignRoutine = () => {
         }))
       );
     });
+
+    firebase.db.collection("Trainings").onSnapshot((snapshot) => {
+      setTrainingData(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
   }, []);
 
-  //update data
-  const unbanUser = (id, userState) => {
-    //const newState = {userState: !userState}
-    if (!userState) {
-      firebase.db
-        .collection("user")
-        .doc(id)
-        .update({ userState: !userState, banReason: "" })
-        .then(() => {
-          console.log("Document updated");
-        })
-        .catch((error) => {
-          console.error("Update Error", error);
-        });
-    } else {
-      console.log("User is alredy Banned");
-    }
+  const updateData = (e) => {
+    e.preventDefault();
+    firebase.db
+      .collection("user")
+      .doc(dataIdToBeUpdated)
+      .update({ trainingAssigned: trainingSelected });
+    setDataIdToBeUpdated("");
+    setTrainingSelected("");
   };
 
   return (
@@ -62,20 +65,41 @@ export const AssignRoutine = () => {
               >
                 <th className="px-6 py-4">{data.name}</th>
                 <th className="px-6 py-4">{data.cc}</th>
-                <th className="px-6 py-4">Not assigned yet</th>
+                <th className="px-6 py-4">{data.trainingAssigned? data.trainingAssigned:"Not assigned yet"}</th>
+
                 <th className="px-6 py-4">
-                  <button
-                    onClick={() => {
-                      unbanUser(id, data.userState);
-                    }}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8"
-                  >
-                    Select Routine
-                  </button>
+                  
+                  
+                  {!dataIdToBeUpdated ? (
+                    <button
+                      onClick={() => {
+                        setDataIdToBeUpdated(id);
+                      }}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8"
+                    >
+                      Select Routine
+                    </button>
+                  ) : (
+                    <div>
+
+                    <select className="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none" onChange={(e) => setTrainingSelected(e.target.value)}>
+                      <option value="">Select one option</option>
+
+                      {trainingData?.map(({ id, data }) => (
+                        <option key={id} value={data.trainingName}>
+                          {data.trainingName}
+                        </option>
+                      ))}
+                    </select>
+                    <button onClick={updateData} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8">Set trainning</button>
+                    </div>
+                  )}
+
+
                 </th>
               </tr>
             ) : (
-              console.log("algo")
+              console.log("")
             )
           )}
         </table>

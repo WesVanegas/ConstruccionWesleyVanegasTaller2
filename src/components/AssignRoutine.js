@@ -40,6 +40,30 @@ export const AssignRoutine = () => {
 
   return (
     <>
+      {!dataIdToBeUpdated ? (
+        console.log("algo")
+      ) : (
+        <div>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none"
+            onChange={(e) => setTrainingSelected(e.target.value)}
+          >
+            <option value="">Select one option</option>
+
+            {trainingData?.map(({ id, data }) => (
+              <option key={id} value={data.trainingName}>
+                {data.trainingName}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={updateData}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8"
+          >
+            Set trainning
+          </button>
+        </div>
+      )}
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tr>
@@ -65,37 +89,21 @@ export const AssignRoutine = () => {
               >
                 <th className="px-6 py-4">{data.name}</th>
                 <th className="px-6 py-4">{data.cc}</th>
-                <th className="px-6 py-4">{data.trainingAssigned? data.trainingAssigned:"Not assigned yet"}</th>
+                <th className="px-6 py-4">
+                  {data.trainingAssigned
+                    ? data.trainingAssigned
+                    : "Not assigned yet"}
+                </th>
 
                 <th className="px-6 py-4">
-                  
-                  
-                  {!dataIdToBeUpdated ? (
-                    <button
-                      onClick={() => {
-                        setDataIdToBeUpdated(id);
-                      }}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8"
-                    >
-                      Select Routine
-                    </button>
-                  ) : (
-                    <div>
-
-                    <select className="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none" onChange={(e) => setTrainingSelected(e.target.value)}>
-                      <option value="">Select one option</option>
-
-                      {trainingData?.map(({ id, data }) => (
-                        <option key={id} value={data.trainingName}>
-                          {data.trainingName}
-                        </option>
-                      ))}
-                    </select>
-                    <button onClick={updateData} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8">Set trainning</button>
-                    </div>
-                  )}
-
-
+                  <button
+                    onClick={() => {
+                      setDataIdToBeUpdated(id);
+                    }}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8"
+                  >
+                    Select Routine
+                  </button>
                 </th>
               </tr>
             ) : (
